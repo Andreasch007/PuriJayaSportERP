@@ -39,8 +39,8 @@ class CategoryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('id');
-        CRUD::column('category_name');
+        // CRUD::column('id');
+        // CRUD::column('category_name');
         // CRUD::column('created_at');
         // CRUD::column('updated_at');
 
@@ -49,6 +49,13 @@ class CategoryCrudController extends CrudController
          * - CRUD::column('price')->type('number');
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
+        CRUD::addColumns([
+            [
+                'label' =>  'Name',
+                'type'  =>  'text',
+                'name'  =>  'category_name'
+            ]
+            ]);
     }
 
     /**
@@ -62,7 +69,7 @@ class CategoryCrudController extends CrudController
         CRUD::setValidation(CategoryRequest::class);
 
         // CRUD::field('id');
-        CRUD::field('category_name');
+        // CRUD::field('category_name');
         // CRUD::field('created_at');
         // CRUD::field('updated_at');
 
@@ -71,6 +78,13 @@ class CategoryCrudController extends CrudController
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
+        CRUD::addFields([
+            [
+                'label' =>  'Name',
+                'type'  =>  'text',
+                'name'  =>  'category_name'
+            ]
+            ]);
     }
 
     /**

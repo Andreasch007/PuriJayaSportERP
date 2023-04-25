@@ -39,17 +39,26 @@ class SubCategoryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('id');
-        CRUD::column('category_id');
-        CRUD::column('sub_category_name');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        // CRUD::column('id');
+        // CRUD::column('category_id');
+        // CRUD::column('sub_category_name');
+        // CRUD::column('created_at');
+        // CRUD::column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
+        CRUD::addColumns(
+            [
+                [
+                    'label' => 'Name',
+                    'type'  => 'text',
+                    'name'  => 'sub_category_name'
+                ]
+            ]
+                );
     }
 
     /**
@@ -63,19 +72,22 @@ class SubCategoryCrudController extends CrudController
         CRUD::setValidation(SubCategoryRequest::class);
 
         // CRUD::field('id');
-        CRUD::addField(
+        CRUD::addFields(
             [
-                'label'     => "Category",
-                'type'      => 'select2',
-                'name'      => 'category_id', // the db column for the foreign key
-
-                // optional
-                'entity'    => 'category', // the method that defines the relationship in your Model
-                'model'     => "App\Models\SubCategory", // foreign key model
-                'attribute' => 'category_name', // foreign key attribute that is shown to user
+                [
+                    'label'     => "Category",
+                    'type'      => 'select2',
+                    'name'      => 'category_id', // the db column for the foreign key
+    
+                    // optional
+                    'entity'    => 'category', // the method that defines the relationship in your Model
+                    'model'     => "App\Models\Category", // foreign key model
+                    'attribute' => 'category_name', // foreign key attribute that is shown to user
+                ],
             ]
+            
         );
-        CRUD::field('sub_category_name');
+        // CRUD::field('sub_category_name');
         // CRUD::field('created_at');
         // CRUD::field('updated_at');
 
