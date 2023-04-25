@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\LocationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Location;
 
 /**
  * Class LocationCrudController
@@ -116,5 +118,32 @@ class LocationCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+    public function store(LocationRequest $request)
+    {
+        $input = $request->all();
+        $user = Auth::user();
+        $location = new Location();
+        $location->loc_name = $input['loc_name'];
+        $location->loc_address = $input['loc_address'];
+        $location->user_id = $user->id;
+        $location->save();
+
+ 
+        return redirect('location/'.$location->id.'/show');
+    }
+
+    public function update(LocationRequest $request,  $id)
+    {
+        $input = $request->all();
+        $user = Auth::user();
+        $location = Location::where('id',$id)->first();
+        // $exam->exam_no = $input['exam_no'];
+        $location->loc_name = $input['loc_name'];
+        $location->loc_address = $input['loc_address'];
+        $location->user_id = $user->id;
+        $location->save(); 
+
+        return redirect('location/'.$location->id.'/show');
     }
 }
