@@ -53,12 +53,20 @@ class SubCategoryCrudController extends CrudController
         CRUD::addColumns(
             [
                 [
-                    'label' => 'Name',
+                    'label' => 'Category',
+                    'type'  => 'relationship',
+                    'name'  => 'category',
+
+
+                ],
+                [
+                    'label' => 'Sub Category',
                     'type'  => 'text',
                     'name'  => 'sub_category_name'
-                ]
+                ],
+
             ]
-                );
+        );
     }
 
     /**
@@ -78,14 +86,19 @@ class SubCategoryCrudController extends CrudController
                     'label'     => "Category",
                     'type'      => 'select2',
                     'name'      => 'category_id', // the db column for the foreign key
-    
+
                     // optional
                     'entity'    => 'category', // the method that defines the relationship in your Model
                     'model'     => "App\Models\Category", // foreign key model
                     'attribute' => 'category_name', // foreign key attribute that is shown to user
                 ],
+                [
+                    'label' =>  'Sub Category',
+                    'name'  =>  'sub_category_name',
+                    'type'  =>  'text'
+                ],
             ]
-            
+
         );
         // CRUD::field('sub_category_name');
         // CRUD::field('created_at');
