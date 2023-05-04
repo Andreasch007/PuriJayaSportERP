@@ -19,7 +19,7 @@ Route::group([
     Route::crud('location', 'LocationCrudController');
     Route::crud('category', 'CategoryCrudController');
     Route::crud('sub-category', 'SubCategoryCrudController');
-    Route::crud('product', 'ProductCrudController');
-    Route::crud('outgoing-invoice-header', 'OutgoingInvoiceHeaderCrudController');
-    Route::crud('outgoing-invoice-detail', 'OutgoingInvoiceDetailCrudController');
+    Route::crud('purchase-invoice', 'PurchaseInvoiceCrudController');
+    Route::crud('supplier', 'SupplierCrudController');
+    Route::get('purchase-invoice/list', [PurchaseInvoiceCrudController::class, 'purchase_detail'])->name('purchase.detail');
 }); // this should be the absolute last line of this file

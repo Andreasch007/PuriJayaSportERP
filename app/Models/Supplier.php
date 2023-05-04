@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use App\Models\PurchaseInvoice;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Category extends Model
+class Supplier extends Model
 {
     use CrudTrait;
 
@@ -15,7 +16,7 @@ class Category extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'categories';
+    protected $table = 'suppliers';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -34,9 +35,9 @@ class Category extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function subCategory()
+    public function purchaseInvoice()
     {
-        return $this->hasMany(SubCategory::class);
+        return $this->hasMany(PurchaseInvoice::class);
     }
 
     /*

@@ -14,5 +14,7 @@
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('category') }}'><i class='nav-icon la la-question'></i> Categories</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('sub-category') }}'><i class='nav-icon la la-question'></i> Sub categories</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('product') }}'><i class='nav-icon la la-question'></i> Products</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('purchase-invoice') }}'><i class='nav-icon la la-question'></i> Purchase invoices</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('supplier') }}'><i class='nav-icon la la-question'></i> Suppliers</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('outgoing-invoice-header') }}'><i class='nav-icon la la-question'></i> Outgoing invoice headers</a></li>
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('outgoing-invoice-detail') }}'><i class='nav-icon la la-question'></i> Outgoing invoice details</a></li>
