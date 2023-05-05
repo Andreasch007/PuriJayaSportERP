@@ -55,7 +55,7 @@ class CategoryCrudController extends CrudController
                 'type'  =>  'text',
                 'name'  =>  'category_name'
             ]
-            ]);
+        ]);
     }
 
     /**

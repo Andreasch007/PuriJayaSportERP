@@ -105,32 +105,30 @@ class PurchaseInvoiceCrudController extends CrudController
 
         // Belum bisa: Default pembuat muncul nama, Default date today
         // Belum selesai: No dokumen otomatis, Posting Unposting, Item Detail
-        
+        $user = Auth::user();
+        // dd($user->id);
         CRUD::addFields([
-            // [
-            //     'name'=>'user',
-            //     'label'=>'Pembuat',
-            //     'type'=>'select',
-            //     'entity'=>'user',
-            //     'attribute'=>'name',
-            //     // 'attributes' => [
-            //     //    'readonly' => 'readonly',
-            //     // ],
-            //     // 'default'   => (function ($query) {
-            //     //     $user = Auth::user();
-            //     //     return $query->where('user_id','=',$user->id)->get();
-            //     // }),
-            // ],
             [
-                'name'=>'user_id',
-                'label'=>'ID Pembuat',
-                'type'=>'text'
-            ],
-            [
-                'name'=>'user_name',
+                'name'=>'user',
                 'label'=>'Pembuat',
-                'type'=>'text'
+                'type'=>'text',
+                // 'entity'=>'user',
+                // 'attribute'=>'name',
+                'attributes' => [
+                   'readonly' => 'readonly',
+                ],
+                'default'   => $user->name
             ],
+            // [
+            //     'name'=>'user_id',
+            //     'label'=>'ID Pembuat',
+            //     'type'=>'text'
+            // ],
+            // [
+            //     'name'=>'user_name',
+            //     'label'=>'Pembuat',
+            //     'type'=>'text'
+            // ],
             [
                 'name'=>'no_header',
                 'label'=>'No. Dokumen',
@@ -230,14 +228,11 @@ class PurchaseInvoiceCrudController extends CrudController
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
 
-        $settings = $this->data;
-        dd($settings->settings);
-
         $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        // return view('vendor.backpack.crud.create_purchaseinvoice', $this->data);
+        return view('vendor.backpack.crud.create_purchaseinvoice', $this->data);
     }
     
     
