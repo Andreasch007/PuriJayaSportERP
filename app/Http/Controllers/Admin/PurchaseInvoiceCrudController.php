@@ -10,6 +10,7 @@ use App\Models\PurchaseInvoiceDetail;
 use App\Http\Requests\PurchaseInvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Http\Request;
 
 /**
  * Class PurchaseInvoiceCrudController
@@ -35,6 +36,24 @@ class PurchaseInvoiceCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/purchase-invoice');
         CRUD::setEntityNameStrings('purchase invoice', 'purchase invoices');
     }
+
+    // public function index(Request $reques){
+    //     if ($request->ajax()) {
+    //         $data = PurchaseInvoiceDetail::select('*');
+    //         return Datatables::of($data)
+    //                 ->addIndexColumn()
+    //                 ->addColumn('action', function($row){
+     
+    //                        $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+    
+    //                         return $btn;
+    //                 })
+    //                 ->rawColumns(['action'])
+    //                 ->make(true);
+    //     }
+        
+    //     return view('users');
+    // }
 
     /**
      * Define what happens when the List operation is loaded.
@@ -170,40 +189,40 @@ class PurchaseInvoiceCrudController extends CrudController
             [
                 'name'=>'detail',
                 'label'=>'Details Item',
-                'type'=>'list_detail',
+                'type'=>'datatable_detail',
                 'wrapper' => [
                     'class' => 'form-group col-md-12',
                 ],
-                'columns' => [
-                    [
-                        'label'=>'No.',
-                        'name'=>'no',
-                        'type'=>'text',
-                        'priority'=>0,
-                        'orderable'=>true,
-                    ],
-                    [
-                        'label'=>'name',
-                        'name'=>'name',
-                        'type'=>'text',
-                        'priority'=>1,
-                        'orderable'=>true,
-                    ],
-                    [
-                        'label'=>'qty',
-                        'name'=>'qty',
-                        'type'=>'text',
-                        'priority'=>2,
-                        'orderable'=>true,
-                    ],
-                    [
-                        'label'=>'keterangan',
-                        'name'=>'keterangan',
-                        'type'=>'text',
-                        'priority'=>3,
-                        'orderable'=>true,
-                    ],
-                ]
+                // 'columns' => [
+                //     [
+                //         'label'=>'No.',
+                //         'name'=>'no',
+                //         'type'=>'text',
+                //         'priority'=>0,
+                //         'orderable'=>true,
+                //     ],
+                //     [
+                //         'label'=>'name',
+                //         'name'=>'name',
+                //         'type'=>'text',
+                //         'priority'=>1,
+                //         'orderable'=>true,
+                //     ],
+                //     [
+                //         'label'=>'qty',
+                //         'name'=>'qty',
+                //         'type'=>'text',
+                //         'priority'=>2,
+                //         'orderable'=>true,
+                //     ],
+                //     [
+                //         'label'=>'keterangan',
+                //         'name'=>'keterangan',
+                //         'type'=>'text',
+                //         'priority'=>3,
+                //         'orderable'=>true,
+                //     ],
+                // ]
             ],
          ]);
         
@@ -257,6 +276,52 @@ class PurchaseInvoiceCrudController extends CrudController
                 'entity'=>'supplier',
                 'attribute'=>'nama_supplier'
             ],
+            [
+                'name'=>'detail',
+                'label'=>'Details Item',
+                'type'=>'datatable_detail',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12',
+                ],
+                'coloumns' => [
+                    [
+                        'label' => 'No',
+                        'data'  => 'DT_RowIndex',
+                        'name'  => 'DT_RowIndex'
+                    ],
+                    [
+                        'label' => 'ID',
+                        'data'  => 'id',
+                        'name'  => 'id',
+                    ],
+                    [
+                        'label' => 'ID Header',
+                        'data'  => 'id_header',
+                        'name'  => 'id_header'
+                    ],
+                    [
+                        'label' => 'Qty',
+                        'data'  => 'qty',
+                        'name'  => 'qty'
+                    ],
+                    [
+                        'label' => 'ID Barang',
+                        'data'  => 'id_barang',
+                        'name'  => 'id_barang'
+                    ],
+                    [
+                        'label' => 'Keterangan',
+                        'data'  => 'keterangan',
+                        'name'  => 'keterangan'
+                    ],
+                    [
+                        'label' => 'Action',
+                        'data'  => 'action',
+                        'name'  => 'action'
+                    ],
+
+                ]
+            ]
          ]);
         
     }
@@ -313,19 +378,10 @@ class PurchaseInvoiceCrudController extends CrudController
 
     public function purchase_detail(Request $request)
     {
-        dd($request->ajax());
+        // dd($request->ajax());
         
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
             $data = PurchaseInvoiceDetail::latest()->get();
-
-            dd(Datatables::of($data)
-            ->addIndexColumn()
-            ->addColumn('action', function($row){
-                $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                return $actionBtn;
-            })
-            ->rawColumns(['action'])
-            ->make(true));
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -335,7 +391,7 @@ class PurchaseInvoiceCrudController extends CrudController
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        }
+        // }
     }
 
     
