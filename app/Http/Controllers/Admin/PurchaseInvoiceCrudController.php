@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use DataTables;
+use Carbon\Carbon;
 use App\Models\PurchaseInvoice;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PurchaseInvoiceDetail;
 use App\Http\Requests\PurchaseInvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use DataTables;
 
 /**
  * Class PurchaseInvoiceCrudController
@@ -106,6 +107,7 @@ class PurchaseInvoiceCrudController extends CrudController
         // Belum bisa: Default pembuat muncul nama, Default date today
         // Belum selesai: No dokumen otomatis, Posting Unposting, Item Detail
         $user = Auth::user();
+        $date = Carbon::now()->toDateString();
         // dd($user->id);
         CRUD::addFields([
             [
@@ -117,53 +119,91 @@ class PurchaseInvoiceCrudController extends CrudController
                 'attributes' => [
                    'readonly' => 'readonly',
                 ],
-                'default'   => $user->name
+                'default'   => $user->name,
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
             ],
-            // [
-            //     'name'=>'user_id',
-            //     'label'=>'ID Pembuat',
-            //     'type'=>'text'
-            // ],
-            // [
-            //     'name'=>'user_name',
-            //     'label'=>'Pembuat',
-            //     'type'=>'text'
-            // ],
             [
                 'name'=>'no_header',
                 'label'=>'No. Dokumen',
-                'type'=>'text'
+                'type'=>'text',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
             ],
             [
                 'name'=>'date_header',
                 'label'=>'Tanggal',
                 'type'=>'date',
-                // 'default'=>'new Date(\'yyyy-mm-dd\');'
-                // optional:
-                // 'date_picker_options' => [
-                //    'todayBtn' => 'linked',
-                //    'format'   => 'dd-mm-yyyy',
-                //    'language' => 'fr'
-                // ],
+                'default'=>$date,
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],[   // Hidden
+                'name'  => 'spacer',
+                'type'  => 'hidden',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
             ],
             [
                 'name'=>'location',
                 'label'=>'Lokasi',
-                'type'=>'select',
+                'type'=>'select2',
                 'entity'=>'location',
-                'attribute'=>'loc_name'
+                'attribute'=>'loc_name',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
             ],
             [
                 'name'=>'supplier',
                 'label'=>'Supplier',
-                'type'=>'select',
+                'type'=>'select2',
                 'entity'=>'supplier',
-                'attribute'=>'nama_supplier'
+                'attribute'=>'nama_supplier',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
             ],
             [
                 'name'=>'detail',
                 'label'=>'Details Item',
-                'type'=>'datatable_detail'
+                'type'=>'list_detail',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12',
+                ],
+                'columns' => [
+                    [
+                        'label'=>'No.',
+                        'name'=>'no',
+                        'type'=>'text',
+                        'priority'=>0,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'name',
+                        'name'=>'name',
+                        'type'=>'text',
+                        'priority'=>1,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'qty',
+                        'name'=>'qty',
+                        'type'=>'text',
+                        'priority'=>2,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'keterangan',
+                        'name'=>'keterangan',
+                        'type'=>'text',
+                        'priority'=>3,
+                        'orderable'=>true,
+                    ],
+                ]
             ],
          ]);
         
@@ -232,7 +272,7 @@ class PurchaseInvoiceCrudController extends CrudController
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('vendor.backpack.crud.create_purchaseinvoice', $this->data);
+        return view($this->crud->getCreateView(), $this->data);
     }
     
     
@@ -273,8 +313,20 @@ class PurchaseInvoiceCrudController extends CrudController
 
     public function purchase_detail(Request $request)
     {
+        dd($request->ajax());
+        
         if ($request->ajax()) {
             $data = PurchaseInvoiceDetail::latest()->get();
+
+            dd(Datatables::of($data)
+            ->addIndexColumn()
+            ->addColumn('action', function($row){
+                $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                return $actionBtn;
+            })
+            ->rawColumns(['action'])
+            ->make(true));
+
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){
