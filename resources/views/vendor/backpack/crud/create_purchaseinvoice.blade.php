@@ -46,7 +46,7 @@
 		      	@include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
 		      @endif
 
-			  <div class="container mt-5">
+			<div class="container mt-5">
 				<table class="table table-bordered yajra-datatable">
 					<thead>
 						<tr>

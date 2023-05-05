@@ -122,6 +122,16 @@ class PurchaseInvoiceCrudController extends CrudController
             //     // }),
             // ],
             [
+                'name'=>'user_id',
+                'label'=>'ID Pembuat',
+                'type'=>'text'
+            ],
+            [
+                'name'=>'user_name',
+                'label'=>'Pembuat',
+                'type'=>'text'
+            ],
+            [
                 'name'=>'no_header',
                 'label'=>'No. Dokumen',
                 'type'=>'text'
@@ -151,6 +161,11 @@ class PurchaseInvoiceCrudController extends CrudController
                 'type'=>'select',
                 'entity'=>'supplier',
                 'attribute'=>'nama_supplier'
+            ],
+            [
+                'name'=>'detail',
+                'label'=>'Details Item',
+                'type'=>'datatable_detail'
             ],
          ]);
         
@@ -207,19 +222,24 @@ class PurchaseInvoiceCrudController extends CrudController
          ]);
         
     }
-
+    
     public function create()
     {
         $this->crud->hasAccessOrFail('create');
 
         // prepare the fields you need to show
         $this->data['crud'] = $this->crud;
+
+        $settings = $this->data;
+        dd($settings->settings);
+
         $this->data['saveAction'] = $this->crud->getSaveAction();
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('vendor.backpack.crud.create_purchaseinvoice', $this->data);
+        // return view('vendor.backpack.crud.create_purchaseinvoice', $this->data);
     }
+    
     
     public function store(PurchaseInvoiceRequest $request)
     {
