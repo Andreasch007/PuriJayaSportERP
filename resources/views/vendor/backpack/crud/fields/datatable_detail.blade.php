@@ -31,29 +31,29 @@
 <script type="text/javascript">
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
+    var columns = <?php echo json_encode($field['columns']); ?>;
+   
     if(id>0) // bukan tipe create
     {
-        var data = <?php echo json_encode($field['columns']); ?>;
-        console.log(data)
-        var table = $('.yajra-datatable').DataTable({
+        $('.yajra-datatable').DataTable({
             processing: true,
             serverSide: true,
             ajax: "http://localhost/PuriJayaSportERP/public/purchase-invoice/list/"+id,
-            // coloumns : data
-            columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                {data: 'id', name: 'id'},
-                {data: 'id_header', name: 'id_header'},
-                {data: 'qty', name: 'qty'},
-                {data: 'id_barang', name: 'id_barang'},
-                {data: 'keterangan', name: 'keterangan'},
-                {
-                    data: 'action', 
-                    name: 'action', 
-                    orderable: true, 
-                    searchable: true
-                },
-            ],
+            columns: columns
+            // columns: [
+            //     {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+            //     {data: 'id', name: 'id'},
+            //     {data: 'id_header', name: 'id_header'},
+            //     {data: 'qty', name: 'qty'},
+            //     {data: 'id_barang', name: 'id_barang'},
+            //     {data: 'keterangan', name: 'keterangan'},
+            //     {
+            //         data: 'action', 
+            //         name: 'action', 
+            //         orderable: true, 
+            //         searchable: true
+            //     },
+            // ],
         });
     }
 });

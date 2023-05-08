@@ -316,7 +316,7 @@ class PurchaseInvoiceCrudController extends CrudController
                     'class' => 'form-group col-md-12',
                 ],
                 'columns' => [
-                    [
+                    [//Wajib ada
                         'label' => 'No',
                         'data'  => 'DT_RowIndex',
                         'name'  => 'DT_RowIndex'
@@ -346,7 +346,7 @@ class PurchaseInvoiceCrudController extends CrudController
                         'data'  => 'keterangan',
                         'name'  => 'keterangan'
                     ],
-                    [
+                    [//Wajib ada kalau mau ada action button
                         'label' => 'Action',
                         'data'  => 'action',
                         'name'  => 'action'
