@@ -29,17 +29,24 @@
                 <div class="modal-body">
                     <form id="productForm" name="productForm" class="form-horizontal">
                         <input type="hidden" name="product_id" id="product_id">
-                        <div class="form-group">    
-                            <label for="name" class="col-sm-2 control-label">Name</label>
+                        {{-- <div class="form-group">    
+                            <label for="name" class="col-sm-2 control-label">No.</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="">
                             </div>
                         </div>
          
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Details</label>
+                            <label class="col-sm-2 control-label">Nama Barang</label>
                             <div class="col-sm-12">
                                 <textarea id="detail" name="detail" required="" placeholder="Enter Details" class="form-control"></textarea>
+                            </div>
+                        </div> --}}
+                        
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Nama Barang</label>
+                            <div class="col-sm-12">
+                                <select class="postName form-control" style="width:250px" name="postName"></select>
                             </div>
                         </div>
           
@@ -96,6 +103,49 @@ $(function () {
         $('#productForm').trigger("reset");
         $('#modelHeading').html("Create New Product");
         $('#ajaxModel').modal('show');
+    });
+    
+    
+    $('#saveBtn').click(function (e) {
+        e.preventDefault();
+        $(this).html('Sending..');
+    
+        $.ajax({
+            data: $('#productForm').serialize(),
+            url: "",
+            type: "POST",
+            dataType: 'json',
+            success: function (data) {
+                $('#productForm').trigger("reset");
+                $('#ajaxModel').modal('hide');
+                table.draw();
+            },
+            error: function (data) {
+                console.log('Error:', data);
+                $('#saveBtn').html('Save Changes');
+            }
+        });
+    });
+
+    $('.postName').select2({
+        placeholder: 'Select an item',
+        ajax: {
+            // url: '/autocompletePro.php',
+            url: "{{ url('picker-master-product') }}",
+            dataType: 'json',
+            delay: 250,
+            data: function (data) {
+                return {
+                    searchTerm: data.term // search term
+                };
+            },
+            processResults: function (response) {
+                return {
+                    results:response
+                };
+            },
+            cache: true
+        }
     });
 
     

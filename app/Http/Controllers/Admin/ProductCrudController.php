@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -217,5 +220,18 @@ class ProductCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function picker(Request $request)
+    {
+        // dd($request->searchTerm);
+
+        $product_all = Product::select('id',DB::RAW("CONCAT(product_code,' :: ',product_name) as text"))
+        ->where('product_name','like','%'.$request->searchTerm.'%')
+        ->get();
+
+        // dd($product_all);
+
+        return json_encode($product_all);
     }
 }
