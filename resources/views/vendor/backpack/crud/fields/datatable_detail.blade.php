@@ -29,7 +29,7 @@
                 <div class="modal-body">
                     <form id="productForm" name="productForm" class="form-horizontal">
                         <input type="hidden" name="product_id" id="product_id">
-                        {{-- <div class="form-group">    
+                        <!-- <div class="form-group">    
                             <label for="name" class="col-sm-2 control-label">No.</label>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="">
@@ -41,17 +41,46 @@
                             <div class="col-sm-12">
                                 <textarea id="detail" name="detail" required="" placeholder="Enter Details" class="form-control"></textarea>
                             </div>
-                        </div> --}}
+                        </div> -->
                         
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Nama Barang</label>
                             <div class="col-sm-12">
-                                <select class="postName form-control" style="width:250px" name="postName"></select>
+                                <select class="postName form-control" style="width:100%" name="postName"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Qty</label>
+                            <div class="col-sm-6">
+                                <input type="number" id="qty" name="qty" required="" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group" >
+                            <label class="col-sm-2 control-label">Harga</label>
+                            <div class="col-sm-6">
+                                <input type="text" id="harga" required="" class="form-control "/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Discount</label>
+                            <div class="col-sm-12">
+                                <input type="text" id="discount" name="discount" required="" class="form-control">
                             </div>
                         </div>
           
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save changes</button>
+                        <div class="form-group">
+                            <label class="col-sm-6 control-label">Keterangan</label>
+                            <div class="col-sm-12">
+                                <textarea id="detail" name="detail" required="" class="form-control"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-offset-2 col-sm-10" style="display: flex;">
+                            <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save</button>
+                            <button type="submit" class="btn btn-secondary" id="cancelBtn" value="cancel" style="margin-left:10px;">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -72,6 +101,19 @@
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
     var columns = <?php echo json_encode($field['columns']); ?>;
+    var harga = $('#harga')[0];
+    var discount = $('#discount')[0];
+    harga.addEventListener('keyup', function(e){
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        harga.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    discount.addEventListener('keyup', function(e){
+        // tambahkan 'Rp.' pada saat form di ketik
+        // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
+        discount.value = formatRupiah(this.value, 'Rp. ');
+    });
    
     if(id>0) // bukan tipe create
     {
@@ -127,6 +169,11 @@ $(function () {
         });
     });
 
+    $('#cancelBtn').click(function (e) {
+        // e.preventDefault();
+        $('#ajaxModel').modal('hide');
+    });
+
     $('.postName').select2({
         placeholder: 'Select an item',
         ajax: {
@@ -147,7 +194,23 @@ $(function () {
             cache: true
         }
     });
-
-    
 });
+
+/* Fungsi formatRupiah */
+function formatRupiah(angka, prefix){
+    var number_string = angka.replace(/[^,\d]/g, '').toString(),
+    split   		= number_string.split(','),
+    sisa     		= split[0].length % 3,
+    rupiah     		= split[0].substr(0, sisa),
+    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
+
+    // tambahkan titik jika yang di input sudah menjadi angka ribuan
+    if(ribuan){
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+}
 </script>

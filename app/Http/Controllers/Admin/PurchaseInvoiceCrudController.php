@@ -337,8 +337,8 @@ class PurchaseInvoiceCrudController extends CrudController
                     ],
                     [
                         'label' => 'ID Barang',
-                        'data'  => 'id_barang',
-                        'name'  => 'id_barang'
+                        'data'  => 'id_product',
+                        'name'  => 'id_product'
                     ],
                     [
                         'label' => 'Keterangan',
