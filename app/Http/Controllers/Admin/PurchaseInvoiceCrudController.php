@@ -133,8 +133,6 @@ class PurchaseInvoiceCrudController extends CrudController
                 'name'=>'user',
                 'label'=>'Pembuat',
                 'type'=>'text',
-                // 'entity'=>'user',
-                // 'attribute'=>'name',
                 'attributes' => [
                    'readonly' => 'readonly',
                 ],
@@ -149,6 +147,9 @@ class PurchaseInvoiceCrudController extends CrudController
                 'type'=>'text',
                 'wrapper' => [
                     'class' => 'form-group col-md-3',
+                ],
+                'attributes' => [
+                   'readonly' => 'readonly',
                 ],
             ],
             [
@@ -190,39 +191,40 @@ class PurchaseInvoiceCrudController extends CrudController
                 'name'=>'detail',
                 'label'=>'Details Item',
                 'type'=>'datatable_detail',
+                'id'=>0,
                 'wrapper' => [
                     'class' => 'form-group col-md-12',
                 ],
-                // 'columns' => [
-                //     [
-                //         'label'=>'No.',
-                //         'name'=>'no',
-                //         'type'=>'text',
-                //         'priority'=>0,
-                //         'orderable'=>true,
-                //     ],
-                //     [
-                //         'label'=>'name',
-                //         'name'=>'name',
-                //         'type'=>'text',
-                //         'priority'=>1,
-                //         'orderable'=>true,
-                //     ],
-                //     [
-                //         'label'=>'qty',
-                //         'name'=>'qty',
-                //         'type'=>'text',
-                //         'priority'=>2,
-                //         'orderable'=>true,
-                //     ],
-                //     [
-                //         'label'=>'keterangan',
-                //         'name'=>'keterangan',
-                //         'type'=>'text',
-                //         'priority'=>3,
-                //         'orderable'=>true,
-                //     ],
-                // ]
+                'columns' => [
+                    [
+                        'label'=>'No.',
+                        'name'=>'no',
+                        'type'=>'text',
+                        'priority'=>0,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'name',
+                        'name'=>'name',
+                        'type'=>'text',
+                        'priority'=>1,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'qty',
+                        'name'=>'qty',
+                        'type'=>'text',
+                        'priority'=>2,
+                        'orderable'=>true,
+                    ],
+                    [
+                        'label'=>'keterangan',
+                        'name'=>'keterangan',
+                        'type'=>'text',
+                        'priority'=>3,
+                        'orderable'=>true,
+                    ],
+                ]
             ],
          ]);
         
@@ -244,46 +246,76 @@ class PurchaseInvoiceCrudController extends CrudController
     {
         // $this->setupCreateOperation();
 
-        
+        $id = request()->route('id');
+        $user = 
+
         CRUD::addFields([
+            [
+                'name'=>'user',
+                'label'=>'Pembuat',
+                'type'=>'select',
+                'attributes' => [
+                   'readonly' => 'readonly',
+                ],
+                'entity'=>'user',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],
             [
                 'name'=>'no_header',
                 'label'=>'No. Dokumen',
                 'type'=>'text',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
                 'attributes' => [
-                    'readonly' => 'readonly',
+                   'readonly' => 'readonly',
                 ],
             ],
             [
                 'name'=>'date_header',
                 'label'=>'Tanggal',
                 'type'=>'date',
-                'attributes' => [
-                    'readonly' => 'readonly',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
+            ],[   // Hidden
+                'name'  => 'spacer',
+                'type'  => 'hidden',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
                 ],
             ],
             [
                 'name'=>'location',
                 'label'=>'Lokasi',
-                'type'=>'select',
+                'type'=>'select2',
                 'entity'=>'location',
-                'attribute'=>'loc_name'
+                'attribute'=>'loc_name',
+                'wrapper' => [
+                    'class' => 'form-group col-md-3',
+                ],
             ],
             [
                 'name'=>'supplier',
                 'label'=>'Supplier',
-                'type'=>'select',
+                'type'=>'select2',
                 'entity'=>'supplier',
-                'attribute'=>'nama_supplier'
+                'attribute'=>'nama_supplier',
+                'wrapper' => [
+                    'class' => 'form-group col-md-6',
+                ],
             ],
             [
                 'name'=>'detail',
                 'label'=>'Details Item',
                 'type'=>'datatable_detail',
+                'id'=>$id,
                 'wrapper' => [
                     'class' => 'form-group col-md-12',
                 ],
-                'coloumns' => [
+                'columns' => [
                     [
                         'label' => 'No',
                         'data'  => 'DT_RowIndex',
@@ -376,12 +408,13 @@ class PurchaseInvoiceCrudController extends CrudController
         // return redirect('member/'.$member->id.'/edit');
     }
 
-    public function purchase_detail(Request $request)
+    public function purchase_detail(Request $request, $id)
     {
-        // dd($request->ajax());
+        // dd($request->columns);
+        // dd($id);
         
-        // if ($request->ajax()) {
-            $data = PurchaseInvoiceDetail::latest()->get();
+        if ($request->ajax()) {
+            $data = PurchaseInvoiceDetail::where('id_header',$id)->latest()->get();
 
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -391,7 +424,7 @@ class PurchaseInvoiceCrudController extends CrudController
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-        // }
+        }
     }
 
     

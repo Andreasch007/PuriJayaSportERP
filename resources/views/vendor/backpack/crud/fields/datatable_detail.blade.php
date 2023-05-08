@@ -5,13 +5,12 @@
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 <body>
-
-
     <div class="container mt-5">
+        <button type="button" class="btn btn-xs btn-primary float-right add">Tambah Barang</button>
         <table class="table table-bordered yajra-datatable">
             <thead>
                 <tr>
-                    @foreach($field['coloumns'] as $col)
+                    @foreach($field['columns'] as $col)
                         <th>{!! $col['label'] !!}</th>
                     @endforeach
                 </tr>
@@ -31,28 +30,31 @@
 <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js" defer></script>
 <script type="text/javascript">
 $(function () {
-    var data = <?php echo json_encode($field['coloumns']); ?>;
-    console.log(data)
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('purchase.detail') }}",
-        // coloumns : data
-        columns: [
-            {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-            {data: 'id', name: 'id'},
-            {data: 'id_header', name: 'id_header'},
-            {data: 'qty', name: 'qty'},
-            {data: 'id_barang', name: 'id_barang'},
-            {data: 'keterangan', name: 'keterangan'},
-            {
-                data: 'action', 
-                name: 'action', 
-                orderable: true, 
-                searchable: true
-            },
-        ]
-    });
-    
+    var id = <?php echo json_encode($field['id']); ?>;
+    if(id>0) // bukan tipe create
+    {
+        var data = <?php echo json_encode($field['columns']); ?>;
+        console.log(data)
+        var table = $('.yajra-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "http://localhost/PuriJayaSportERP/public/purchase-invoice/list/"+id,
+            // coloumns : data
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'id', name: 'id'},
+                {data: 'id_header', name: 'id_header'},
+                {data: 'qty', name: 'qty'},
+                {data: 'id_barang', name: 'id_barang'},
+                {data: 'keterangan', name: 'keterangan'},
+                {
+                    data: 'action', 
+                    name: 'action', 
+                    orderable: true, 
+                    searchable: true
+                },
+            ],
+        });
+    }
 });
 </script>
