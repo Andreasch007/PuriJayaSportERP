@@ -20,7 +20,45 @@
         </table>
     </div>
 
+    <!--  -->
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <form class="form" action="" method="POST">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">New Customer</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id">
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" name="phone" class="form-control input-sm">
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">DOB</label>
+                            <input type="date" name="dob" class="form-control input-sm">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-save">Save</button>
+                        <button type="button" class="btn btn-primary btn-update">Update</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
+<!--  -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
@@ -32,6 +70,14 @@
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
     var columns = <?php echo json_encode($field['columns']); ?>;
+
+    // $.noConflict();
+    var token = '';
+    var modal = $('.modal');
+    var form = $('.form');
+    var btnAdd = $('.add'),
+        btnSave = $('.btn-save'),
+        btnUpdate = $('.btn-update');
    
     if(id>0) // bukan tipe create
     {
@@ -55,6 +101,16 @@ $(function () {
             //     },
             // ],
         });
-    }
+    };
+
+    btnAdd.click(function(){
+        modal.modal();
+        form.trigger('reset');
+        modal.find('.modal-title').text('Add New');
+        btnSave.show();
+        btnUpdate.hide();
+    });
+
+    
 });
 </script>

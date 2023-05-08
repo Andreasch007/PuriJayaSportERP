@@ -247,7 +247,6 @@ class PurchaseInvoiceCrudController extends CrudController
         // $this->setupCreateOperation();
 
         $id = request()->route('id');
-        $user = 
 
         CRUD::addFields([
             [
