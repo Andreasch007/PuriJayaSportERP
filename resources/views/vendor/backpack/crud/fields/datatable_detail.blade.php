@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container mt-5">
-        <button type="button" class="btn btn-xs btn-primary float-right add">Tambah Barang</button>
+        <button type="button" class="btn btn-xs btn-primary float-right add" id="createNewProduct" href="javascript:void(0)" >Tambah Barang</button>
         <table class="table table-bordered yajra-datatable">
             <thead>
                 <tr>
@@ -20,40 +20,35 @@
         </table>
     </div>
 
-    <!--  -->
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <form class="form" action="" method="POST">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">New Customer</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" name="id">
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" class="form-control input-sm">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone</label>
-                            <input type="text" name="phone" class="form-control input-sm">
-                        </div>
-                        <div class="form-group">
-                            <label for="dob">DOB</label>
-                            <input type="date" name="dob" class="form-control input-sm">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-save">Save</button>
-                        <button type="button" class="btn btn-primary btn-update">Update</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
+    <div class="modal fade" id="ajaxModel" aria-hidden="true" data-backdrop="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modelHeading"></h4>
                 </div>
-            </form>
+                <div class="modal-body">
+                    <form id="productForm" name="productForm" class="form-horizontal">
+                        <input type="hidden" name="product_id" id="product_id">
+                        <div class="form-group">    
+                            <label for="name" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="">
+                            </div>
+                        </div>
+         
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Details</label>
+                            <div class="col-sm-12">
+                                <textarea id="detail" name="detail" required="" placeholder="Enter Details" class="form-control"></textarea>
+                            </div>
+                        </div>
+          
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -70,14 +65,6 @@
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
     var columns = <?php echo json_encode($field['columns']); ?>;
-
-    // $.noConflict();
-    var token = '';
-    var modal = $('.modal');
-    var form = $('.form');
-    var btnAdd = $('.add'),
-        btnSave = $('.btn-save'),
-        btnUpdate = $('.btn-update');
    
     if(id>0) // bukan tipe create
     {
@@ -103,12 +90,12 @@ $(function () {
         });
     };
 
-    btnAdd.click(function(){
-        modal.modal();
-        form.trigger('reset');
-        modal.find('.modal-title').text('Add New');
-        btnSave.show();
-        btnUpdate.hide();
+    $('#createNewProduct').click(function () {
+        $('#saveBtn').val("create-product");
+        $('#product_id').val('');
+        $('#productForm').trigger("reset");
+        $('#modelHeading').html("Create New Product");
+        $('#ajaxModel').modal('show');
     });
 
     
