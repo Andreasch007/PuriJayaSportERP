@@ -26,4 +26,5 @@ Route::group([
     Route::get('purchase-invoice/list/{id}', 'PurchaseInvoiceCrudController@purchase_detail');
     Route::crud('customers', 'CustomersCrudController');
     Route::get('picker-master-product', 'ProductCrudController@picker');
+    Route::crud('document-flow', 'DocumentFlowCrudController');
 }); // this should be the absolute last line of this file

@@ -31,3 +31,5 @@
 {{-- <li class='nav-item'><a class='nav-link' href='{{ backpack_url('outgoing-invoice-detail') }}'><i class='nav-icon la la-question'></i> Outgoing invoice details</a></li> --}}
 
 <li class='nav-item'><a class='nav-link' href='{{ backpack_url('customers') }}'><i class='nav-icon la la-question'></i> Pembeli</a></li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('document-flow') }}'><i class='nav-icon la la-question'></i> Document flows</a></li>
