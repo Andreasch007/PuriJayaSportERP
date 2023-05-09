@@ -95,6 +95,7 @@
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
     var allColumns = <?php echo json_encode($field['columns']); ?>;
+    console.log(allColumns);
     var columns = allColumns.filter((data) => {
         return data.type == 'show';
     });
@@ -139,7 +140,6 @@ $(function () {
 
     $('#createNewProduct').click(function () {
         $('#saveBtn').val("create-product");
-        // $('#product_id').val('');
         $('#productForm').trigger("reset");
         $('#modelHeading').html("Create New Product");
         $('#ajaxModel').modal('show');

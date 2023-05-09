@@ -52,6 +52,10 @@ class PurchaseInvoice extends Model
         return $this->belongsTo(Supplier::class);
     }
 
+    public function purchaseinvoicedetail(){
+        return $this->hasMany(PurchaseInvoiceDetail::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

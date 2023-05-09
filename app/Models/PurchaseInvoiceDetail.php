@@ -35,6 +35,14 @@ class PurchaseInvoiceDetail extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function purchaseinvoice(){
+        return $this->belongsTo(PurchaseInvoice::class);
+    }
+
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
