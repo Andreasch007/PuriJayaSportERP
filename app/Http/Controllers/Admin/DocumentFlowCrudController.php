@@ -82,6 +82,11 @@ class DocumentFlowCrudController extends CrudController
 
         CRUD::addFields([
             [
+                'label' =>  'ID.',
+                'name'  =>  'id',
+                'type'  =>  'number'
+            ],
+            [
                 'label' =>  'No.',
                 'name'  =>  'doctype_no',
                 'type'  =>  'text'
@@ -91,11 +96,7 @@ class DocumentFlowCrudController extends CrudController
                 'name'  =>  'doctype_desc',
                 'type'  =>  'text'
             ],
-            [
-                'label' =>  'Tgl. Pembuatan',
-                'name'  =>  'created_at',
-                'type'  =>  'date'
-            ],
+
         ]);
 
         /**
