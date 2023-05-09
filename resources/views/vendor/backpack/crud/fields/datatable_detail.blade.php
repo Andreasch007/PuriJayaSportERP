@@ -27,20 +27,20 @@
                     <h4 class="modal-title" id="modelHeading"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="productForm" name="productForm" class="form-horizontal" enctype="multipart/form-data">
-                             
+                    <form id="productForm" name="productForm" class="form-horizontal" enctype="multipart/form-data">      
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">Qty</label>
-                            <div class="col-sm-6">
-                            <input name="product_id" id="product_id">   
-                            </div>
-                        </div>                
-                        <div class="form-group">
-                            <label class="col-sm-12 control-label">Nama Barang</label>
+                            <label class="col-sm-12 control-label">Barang</label>
                             <div class="col-sm-12">
-                                <select class="postName form-control" style="width:100%" name="postName" id="postName"></select>
+                                <select class="product_id form-control" style="width:100%" name="product_id" id="product_id"></select>
                             </div>
                         </div>
+
+                        <!-- <div class="form-group">
+                            <label class="col-sm-12 control-label">Barang</label>
+                            <div class="col-sm-12"> -->
+                                <input type="hidden" class="form-control" style="width:100%" name="product_name" id="product_name">
+                            <!-- </div>
+                        </div> -->
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Qty</label>
@@ -134,7 +134,7 @@ $(function () {
 
     $('#createNewProduct').click(function () {
         $('#saveBtn').val("create-product");
-        $('#product_id').val('');
+        // $('#product_id').val('');
         $('#productForm').trigger("reset");
         $('#modelHeading').html("Create New Product");
         $('#ajaxModel').modal('show');
@@ -179,7 +179,7 @@ $(function () {
         $('#ajaxModel').modal('hide');
     });
 
-    $('.postName').select2({
+    $('.product_id').select2({
         placeholder: 'Select an item',
         ajax: {
             url: "{{ url('picker-master-product') }}",
@@ -199,11 +199,9 @@ $(function () {
         }
     });
 
-    $('#postName').change(() =>{
-        var selectedProductID = $(this).find(':selected').val();
-        console.log(selectedProductID)
-        $("#product_id").val(selectedProductID);
-        console.log($("#product_id"))
+    $('#product_id').change(()=>{
+        var selectedProductName = $(this).find('option:selected').text()
+        $('#product_name').val(selectedProductName)
     })
 });
 
