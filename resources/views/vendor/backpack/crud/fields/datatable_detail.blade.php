@@ -11,7 +11,9 @@
             <thead>
                 <tr>
                     @foreach($field['columns'] as $col)
-                        <th>{!! $col['label'] !!}</th>
+                        @if($col['type']!='hidden')
+                            <th>{!! $col['label'] !!}</th>
+                        @endif
                     @endforeach
                 </tr>
             </thead>
@@ -27,28 +29,20 @@
                     <h4 class="modal-title" id="modelHeading"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="productForm" name="productForm" class="form-horizontal">
-                        <input type="hidden" name="product_id" id="product_id">
-                        <!-- <div class="form-group">    
-                            <label for="name" class="col-sm-2 control-label">No.</label>
+                    <form id="productForm" name="productForm" class="form-horizontal" enctype="multipart/form-data">      
+                        <div class="form-group">
+                            <label class="col-sm-12 control-label">Barang</label>
                             <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="">
+                                <select class="product_id form-control" style="width:100%" name="product_id" id="product_id"></select>
                             </div>
                         </div>
-         
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Nama Barang</label>
-                            <div class="col-sm-12">
-                                <textarea id="detail" name="detail" required="" placeholder="Enter Details" class="form-control"></textarea>
-                            </div>
+
+                        <!-- <div class="form-group">
+                            <label class="col-sm-12 control-label">Barang</label>
+                            <div class="col-sm-12"> -->
+                                <input type="hidden" class="form-control" style="width:100%" name="product_name" id="product_name">
+                            <!-- </div>
                         </div> -->
-                        
-                        <div class="form-group">
-                            <label class="col-sm-12 control-label">Nama Barang</label>
-                            <div class="col-sm-12">
-                                <select class="postName form-control" style="width:100%" name="postName"></select>
-                            </div>
-                        </div>
 
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Qty</label>
@@ -60,7 +54,7 @@
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">Harga</label>
                             <div class="col-sm-6">
-                                <input type="text" id="harga" required="" class="form-control "/>
+                                <input type="text" id="harga" required="" class="form-control" name="harga"/>
                             </div>
                         </div>
 
@@ -74,13 +68,13 @@
                         <div class="form-group">
                             <label class="col-sm-6 control-label">Keterangan</label>
                             <div class="col-sm-12">
-                                <textarea id="detail" name="detail" required="" class="form-control"></textarea>
+                                <textarea id="detail" name="keterangan" required="" class="form-control"></textarea>
                             </div>
                         </div>
 
                         <div class="col-sm-offset-2 col-sm-10" style="display: flex;">
                             <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save</button>
-                            <button type="submit" class="btn btn-secondary" id="cancelBtn" value="cancel" style="margin-left:10px;">Cancel</button>
+                            <button type="cancel" class="btn btn-secondary" id="cancelBtn" value="cancel" style="margin-left:10px;">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -100,9 +94,13 @@
 <script type="text/javascript">
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
-    var columns = <?php echo json_encode($field['columns']); ?>;
+    var allColumns = <?php echo json_encode($field['columns']); ?>;
+    var columns = allColumns.filter((data) => {
+        return data.type == 'show';
+    });
     var harga = $('#harga')[0];
     var discount = $('#discount')[0];
+    
     harga.addEventListener('keyup', function(e){
         // tambahkan 'Rp.' pada saat form di ketik
         // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
@@ -114,7 +112,7 @@ $(function () {
         // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
         discount.value = formatRupiah(this.value, 'Rp. ');
     });
-   
+
     if(id>0) // bukan tipe create
     {
         $('.yajra-datatable').DataTable({
@@ -141,13 +139,24 @@ $(function () {
 
     $('#createNewProduct').click(function () {
         $('#saveBtn').val("create-product");
-        $('#product_id').val('');
+        // $('#product_id').val('');
         $('#productForm').trigger("reset");
         $('#modelHeading').html("Create New Product");
         $('#ajaxModel').modal('show');
     });
-    
-    
+
+    $('#saveBtn').click((e) =>{
+        
+        let dataCreate = {}
+        const modal = document.querySelector('.modal-body');
+        const form = modal.querySelectorAll('input, textarea, select');
+        
+        form.forEach((el,index) => {
+            dataCreate[el.name] = el.value
+        });
+        console.log(dataCreate);
+    });
+
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         $(this).html('Sending..');
@@ -169,15 +178,17 @@ $(function () {
         });
     });
 
+    //cancel button in modal
     $('#cancelBtn').click(function (e) {
         // e.preventDefault();
         $('#ajaxModel').modal('hide');
     });
+    //emd of cancel button in modal
 
-    $('.postName').select2({
+    //select option for product
+    $('.product_id').select2({
         placeholder: 'Select an item',
         ajax: {
-            // url: '/autocompletePro.php',
             url: "{{ url('picker-master-product') }}",
             dataType: 'json',
             delay: 250,
@@ -194,6 +205,12 @@ $(function () {
             cache: true
         }
     });
+
+    $('#product_id').change(()=>{
+        var selectedProductName = $(this).find('option:selected').text()
+        $('#product_name').val(selectedProductName)
+    });
+    //end of select option product
 });
 
 /* Fungsi formatRupiah */
