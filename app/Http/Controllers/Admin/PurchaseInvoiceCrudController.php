@@ -11,7 +11,7 @@ use App\Http\Requests\PurchaseInvoiceRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Http\Request;
-
+use DB;
 /**
  * Class PurchaseInvoiceCrudController
  * @package App\Http\Controllers\Admin
@@ -318,37 +318,44 @@ class PurchaseInvoiceCrudController extends CrudController
                     [//Wajib ada
                         'label' => 'No',
                         'data'  => 'DT_RowIndex',
-                        'name'  => 'DT_RowIndex'
+                        'name'  => 'DT_RowIndex',
+                        'type'  => 'show'
                     ],
                     [
                         'label' => 'ID',
                         'data'  => 'id',
                         'name'  => 'id',
-                    ],
-                    [
-                        'label' => 'ID Header',
-                        'data'  => 'id_header',
-                        'name'  => 'id_header'
-                    ],
-                    [
-                        'label' => 'Qty',
-                        'data'  => 'qty',
-                        'name'  => 'qty'
+                        'type'  => 'hidden'
                     ],
                     [
                         'label' => 'ID Barang',
                         'data'  => 'id_product',
-                        'name'  => 'id_product'
+                        'name'  => 'id_product',
+                        'type'  => 'hidden'
+                    ],
+                    [
+                        'label' => 'Nama Barang',
+                        'data'  => 'product_name',
+                        'name'  => 'product_name',
+                        'type'  => 'show'
+                    ],
+                    [
+                        'label' => 'Qty',
+                        'data'  => 'qty',
+                        'name'  => 'qty',
+                        'type'  => 'show'
                     ],
                     [
                         'label' => 'Keterangan',
                         'data'  => 'keterangan',
-                        'name'  => 'keterangan'
+                        'name'  => 'keterangan',
+                        'type'  => 'show'
                     ],
                     [//Wajib ada kalau mau ada action button
                         'label' => 'Action',
                         'data'  => 'action',
-                        'name'  => 'action'
+                        'name'  => 'action',
+                        'type'  => 'show'
                     ],
 
                 ]
@@ -413,8 +420,10 @@ class PurchaseInvoiceCrudController extends CrudController
         // dd($id);
         
         if ($request->ajax()) {
-            $data = PurchaseInvoiceDetail::where('id_header',$id)->latest()->get();
-
+            $data = DB::table('purchase_invoice_d as a')->select('a.id','id_header','qty','id_product','keterangan',DB::raw('CONCAT(product_code," :: ",product_name) as product_name'))
+                    ->join('products as b','a.id_product','b.id')
+                    ->where('id_header',$id)->get();
+            // dd($data);
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function($row){

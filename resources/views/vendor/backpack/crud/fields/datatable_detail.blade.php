@@ -11,7 +11,9 @@
             <thead>
                 <tr>
                     @foreach($field['columns'] as $col)
-                        <th>{!! $col['label'] !!}</th>
+                        @if($col['type']!='hidden')
+                            <th>{!! $col['label'] !!}</th>
+                        @endif
                     @endforeach
                 </tr>
             </thead>
@@ -92,7 +94,10 @@
 <script type="text/javascript">
 $(function () {
     var id = <?php echo json_encode($field['id']); ?>;
-    var columns = <?php echo json_encode($field['columns']); ?>;
+    var allColumns = <?php echo json_encode($field['columns']); ?>;
+    var columns = allColumns.filter((data) => {
+        return data.type == 'show';
+    });
     var harga = $('#harga')[0];
     var discount = $('#discount')[0];
     
@@ -173,12 +178,14 @@ $(function () {
         });
     });
 
-
+    //cancel button in modal
     $('#cancelBtn').click(function (e) {
         // e.preventDefault();
         $('#ajaxModel').modal('hide');
     });
+    //emd of cancel button in modal
 
+    //select option for product
     $('.product_id').select2({
         placeholder: 'Select an item',
         ajax: {
@@ -202,7 +209,8 @@ $(function () {
     $('#product_id').change(()=>{
         var selectedProductName = $(this).find('option:selected').text()
         $('#product_name').val(selectedProductName)
-    })
+    });
+    //end of select option product
 });
 
 /* Fungsi formatRupiah */
