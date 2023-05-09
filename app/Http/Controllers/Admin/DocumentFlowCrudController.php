@@ -41,6 +41,11 @@ class DocumentFlowCrudController extends CrudController
     {
         CRUD::addColumns([
             [
+                'label' =>  'ID.',
+                'name'  =>  'id',
+                'type'  =>  'number'
+            ],
+            [
                 'label' =>  'No.',
                 'name'  =>  'doctype_no',
                 'type'  =>  'text'
