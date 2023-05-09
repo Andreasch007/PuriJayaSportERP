@@ -27,26 +27,12 @@
                     <h4 class="modal-title" id="modelHeading"></h4>
                 </div>
                 <div class="modal-body">
-                    <form id="productForm" name="productForm" class="form-horizontal">
-                        <input type="hidden" name="product_id" id="product_id">
-                        <!-- <div class="form-group">    
-                            <label for="name" class="col-sm-2 control-label">No.</label>
-                            <div class="col-sm-12">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" value="" maxlength="50" required="">
-                            </div>
-                        </div>
-         
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Nama Barang</label>
-                            <div class="col-sm-12">
-                                <textarea id="detail" name="detail" required="" placeholder="Enter Details" class="form-control"></textarea>
-                            </div>
-                        </div> -->
-                        
+                    <form id="productForm" name="productForm" class="form-horizontal" enctype="multipart/form-data">
+                        <input type="hidden" name="product_id" id="product_id">                        
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Nama Barang</label>
                             <div class="col-sm-12">
-                                <select class="postName form-control" style="width:100%" name="postName"></select>
+                                <select class="postName form-control" style="width:100%" name="postName" id="postName"></select>
                             </div>
                         </div>
 
@@ -60,7 +46,7 @@
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">Harga</label>
                             <div class="col-sm-6">
-                                <input type="text" id="harga" required="" class="form-control "/>
+                                <input type="text" id="harga" required="" class="form-control"/>
                             </div>
                         </div>
 
@@ -80,7 +66,7 @@
 
                         <div class="col-sm-offset-2 col-sm-10" style="display: flex;">
                             <button type="submit" class="btn btn-primary" id="saveBtn" value="create">Save</button>
-                            <button type="submit" class="btn btn-secondary" id="cancelBtn" value="cancel" style="margin-left:10px;">Cancel</button>
+                            <button type="cancel" class="btn btn-secondary" id="cancelBtn" value="cancel" style="margin-left:10px;">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -103,6 +89,7 @@ $(function () {
     var columns = <?php echo json_encode($field['columns']); ?>;
     var harga = $('#harga')[0];
     var discount = $('#discount')[0];
+    
     harga.addEventListener('keyup', function(e){
         // tambahkan 'Rp.' pada saat form di ketik
         // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
@@ -114,7 +101,7 @@ $(function () {
         // gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
         discount.value = formatRupiah(this.value, 'Rp. ');
     });
-   
+
     if(id>0) // bukan tipe create
     {
         $('.yajra-datatable').DataTable({
@@ -146,8 +133,22 @@ $(function () {
         $('#modelHeading').html("Create New Product");
         $('#ajaxModel').modal('show');
     });
-    
-    
+
+    var output = [];
+    $('#saveBtn').click((e) =>{
+        
+        const modal = document.querySelector('.modal-body');
+        const form = modal.querySelectorAll('input, select');
+
+        form.forEach((el,index) => {
+            let obj = {}
+            obj[el.name] = el.value
+            output.push(obj);
+        });
+        console.log(output);
+
+    });
+
     $('#saveBtn').click(function (e) {
         e.preventDefault();
         $(this).html('Sending..');
@@ -168,6 +169,7 @@ $(function () {
             }
         });
     });
+
 
     $('#cancelBtn').click(function (e) {
         // e.preventDefault();
