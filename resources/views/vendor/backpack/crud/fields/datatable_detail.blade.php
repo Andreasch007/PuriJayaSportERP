@@ -134,19 +134,17 @@ $(function () {
         $('#ajaxModel').modal('show');
     });
 
-    var output = [];
     $('#saveBtn').click((e) =>{
         
+        let dataCreate = {}
         const modal = document.querySelector('.modal-body');
         const form = modal.querySelectorAll('input, select');
-
+        
         form.forEach((el,index) => {
-            let obj = {}
-            obj[el.name] = el.value
-            output.push(obj);
+            
+            dataCreate[el.name] = el.value
         });
-        console.log(output);
-
+        console.log(dataCreate);
     });
 
     $('#saveBtn').click(function (e) {
