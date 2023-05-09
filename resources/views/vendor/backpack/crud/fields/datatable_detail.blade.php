@@ -28,7 +28,13 @@
                 </div>
                 <div class="modal-body">
                     <form id="productForm" name="productForm" class="form-horizontal" enctype="multipart/form-data">
-                        <input type="hidden" name="product_id" id="product_id">                        
+                             
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Qty</label>
+                            <div class="col-sm-6">
+                            <input name="product_id" id="product_id">   
+                            </div>
+                        </div>                
                         <div class="form-group">
                             <label class="col-sm-12 control-label">Nama Barang</label>
                             <div class="col-sm-12">
@@ -46,7 +52,7 @@
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">Harga</label>
                             <div class="col-sm-6">
-                                <input type="text" id="harga" required="" class="form-control"/>
+                                <input type="text" id="harga" required="" class="form-control" name="harga"/>
                             </div>
                         </div>
 
@@ -60,7 +66,7 @@
                         <div class="form-group">
                             <label class="col-sm-6 control-label">Keterangan</label>
                             <div class="col-sm-12">
-                                <textarea id="detail" name="detail" required="" class="form-control"></textarea>
+                                <textarea id="detail" name="keterangan" required="" class="form-control"></textarea>
                             </div>
                         </div>
 
@@ -138,10 +144,9 @@ $(function () {
         
         let dataCreate = {}
         const modal = document.querySelector('.modal-body');
-        const form = modal.querySelectorAll('input, select');
+        const form = modal.querySelectorAll('input, textarea, select');
         
         form.forEach((el,index) => {
-            
             dataCreate[el.name] = el.value
         });
         console.log(dataCreate);
@@ -177,7 +182,6 @@ $(function () {
     $('.postName').select2({
         placeholder: 'Select an item',
         ajax: {
-            // url: '/autocompletePro.php',
             url: "{{ url('picker-master-product') }}",
             dataType: 'json',
             delay: 250,
@@ -194,6 +198,13 @@ $(function () {
             cache: true
         }
     });
+
+    $('#postName').change(() =>{
+        var selectedProductID = $(this).find(':selected').val();
+        console.log(selectedProductID)
+        $("#product_id").val(selectedProductID);
+        console.log($("#product_id"))
+    })
 });
 
 /* Fungsi formatRupiah */
