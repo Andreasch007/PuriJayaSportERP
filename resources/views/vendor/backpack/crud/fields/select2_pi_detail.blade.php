@@ -83,16 +83,16 @@
                         dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : document.body
                     });
                 }
-
-                $(element).on('change',function(j){
-                    var option = $(this).find('option:selected');
-                    var price = 0;
-                    if(option.length == 1){
-                        price = option.attr('data-price');
-                    }
-                    // consol.log(price);
-                    $(this).closest("div.repeatable-element").find('.unit-price input').val(price)
-                });
+                
+                // $(element).on('change',function(){
+                //     var option = $(this).find('option:selected');
+                //     var price = 0;
+                //     if(option.length == 1){
+                //         price = option.attr('data-price');
+                //     }
+                //     // $(this).closest("div.repeatable-element").find('input.harga_unit').val(price)
+                //     $('input.harga_unit').val(price).trigger("input")
+                // });
             }
         </script>
     @endpush

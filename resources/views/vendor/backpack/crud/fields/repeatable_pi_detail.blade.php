@@ -292,6 +292,33 @@
             // show or hide new item button
             container.parent().parent().find('.add-repeatable-element-button').toggleClass('d-none', current_rows >= max_rows);
         }
+
+
+        //detect change input repeatable looking for harga total
+        $( "form" ).on( "input", "input", function() {
+            var qty;
+            var harga_unit;
+            var discount;
+            var ppn;
+
+            qty = $('.qty').val()
+            harga_unit = $('.harga_unit').val();
+            discount = $('.disc_value').val();
+            ppn = $('.vat_value').val()
+
+            if(isNaN(discount)){
+                discount = 0
+            }
+
+            if(isNaN(ppn)){
+                ppn = 0
+            }
+
+            total_harga = parseFloat(((qty*harga_unit)-discount)+parseFloat(ppn))
+
+            $("input.total_harga").val(total_harga);
+        })
+
     </script>
   @endpush
 @endif

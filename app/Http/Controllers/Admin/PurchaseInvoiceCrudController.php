@@ -212,8 +212,7 @@ class PurchaseInvoiceCrudController extends CrudController
                         'attribute' => 'full_name',
                         'placeholder' => 'Select a Product',
                         'options' => (function($input){
-                            return $input->leftjoin('purchase_invoice_d as b','products.id','id_product')
-                                    ->select(DB::raw('CONCAT(product_code," :: ",product_name, " :: Rp. ",product_price) as full_name'),'products.id','products.product_price')
+                            return $input->select(DB::raw('CONCAT(product_code," :: ",product_name) as full_name'),'products.id','products.product_price')
                                     ->get();
                         }),
                         'wrapperAttributes' => [
@@ -222,7 +221,7 @@ class PurchaseInvoiceCrudController extends CrudController
                     ],
                     [
                         'label' => 'Qty',
-                        'type'  => 'number_pi_detail_qty',
+                        'type'  => 'number',
                         'name'  => 'qty',
                         'attributes' => [
                             'class' => 'form-control qty'
@@ -235,15 +234,22 @@ class PurchaseInvoiceCrudController extends CrudController
                         'label' => 'Harga',
                         'type'  => 'number',
                         'name'  => 'price',
+                        'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control harga_unit'
+                        ],
                         'wrapperAttributes' => [
-                            'class' => 'form-group col-md-2 price'
+                            'class' => 'form-group col-md-2'
                         ]
                     ],
 					[  
                         'label' => 'Disc.',
                         'name'  => 'disc_value',
                         'type'  => 'number',
-						'default' => '0',
+                        'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control disc_value'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
                         ]
@@ -252,7 +258,10 @@ class PurchaseInvoiceCrudController extends CrudController
                         'label' => 'PPN',
                         'name'  => 'vat_value',
                         'type'  => 'number',
-						'default' => '0',
+						'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control vat_value'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
                         ]
@@ -261,12 +270,12 @@ class PurchaseInvoiceCrudController extends CrudController
                         'label' => 'Total Harga',
                         'name'  => 'total_price',
                         'type'  => 'number',
-						'default' => '0',
+						'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control total_harga'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
-                        ],
-                        'attributes' =>  [
-                            'readonly'=>'readonly',
                         ],
                     ],
                     [  
@@ -437,8 +446,7 @@ class PurchaseInvoiceCrudController extends CrudController
                         'attribute' => 'full_name',
                         'placeholder' => 'Select a Product',
                         'options' => (function($input){
-                            return $input->leftjoin('purchase_invoice_d as b','products.id','id_product')
-                                    ->select(DB::raw('CONCAT(product_code," :: ",product_name, " :: Rp. ",product_price) as full_name'),'products.id','products.product_price')
+                            return $input->select(DB::raw('CONCAT(product_code," :: ",product_name) as full_name'),'products.id','products.product_price')
                                     ->get();
                         }),
                         'wrapperAttributes' => [
@@ -447,7 +455,7 @@ class PurchaseInvoiceCrudController extends CrudController
                     ],
                     [
                         'label' => 'Qty',
-                        'type'  => 'number_pi_detail_qty',
+                        'type'  => 'number',
                         'name'  => 'qty',
                         'attributes' => [
                             'class' => 'form-control qty'
@@ -457,26 +465,25 @@ class PurchaseInvoiceCrudController extends CrudController
                         ]
                     ],
                     [
-                        'label' => 'Harga Unit',
-                        'type'  => 'number',
-                        'name'  => 'unit_price',
-                        'wrapperAttributes' => [
-                            'class' => 'form-group col-md-2 unit-price'
-                        ]
-                    ],
-                    [
                         'label' => 'Harga',
                         'type'  => 'number',
                         'name'  => 'price',
+                        'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control harga_unit'
+                        ],
                         'wrapperAttributes' => [
-                            'class' => 'form-group col-md-2 price'
+                            'class' => 'form-group col-md-2'
                         ]
                     ],
 					[  
                         'label' => 'Disc.',
                         'name'  => 'disc_value',
                         'type'  => 'number',
-						'default' => '0',
+						'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control disc_value'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
                         ]
@@ -485,7 +492,10 @@ class PurchaseInvoiceCrudController extends CrudController
                         'label' => 'PPN',
                         'name'  => 'vat_value',
                         'type'  => 'number',
-						'default' => '0',
+						'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control vat_value'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
                         ]
@@ -494,13 +504,16 @@ class PurchaseInvoiceCrudController extends CrudController
                         'label' => 'Total Harga',
                         'name'  => 'total_price',
                         'type'  => 'number',
-						'default' => '0',
+                        'default' => 0,
+                        'attributes' => [
+                            'class' => 'form-control total_harga'
+                        ],
                         'wrapperAttributes' => [
                             'class' => 'form-group col-md-2'
                         ],
-                        'attributes' =>  [
-                            'readonly'=>'readonly',
-                        ],
+                        // 'attributes' =>  [
+                        //     'readonly'=>'readonly',
+                        // ],
                     ],
                     [  
                         'label' => 'Keterangan',
