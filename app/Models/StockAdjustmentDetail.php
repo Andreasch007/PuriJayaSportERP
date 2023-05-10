@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
-class Product extends Model
+class StockAdjustmentDetail extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'products';
+    protected $table = 'stock_adjustment_d';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -34,22 +34,13 @@ class Product extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
+
+    public function stockadjustment(){
+        return $this->belongsTo(StockAdjustment::class);
     }
 
-    public function subCategory()
-    {
-        return $this->belongsTo(SubCategory::class);
-    }
-
-    public function purchaseinvoicedetail(){
-        return $this->hasMany(PurchaseInvoiceDetail::class);
-    }
-
-    public function stockadjustmentdetail(){
-        return $this->hasMany(StockAdjustmentDetail::class);
+    public function product(){
+        return $this->belongsTo(Product::class);
     }
 
     /*

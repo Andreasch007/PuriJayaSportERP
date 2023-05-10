@@ -27,4 +27,5 @@ Route::group([
     Route::crud('customers', 'CustomersCrudController');
     Route::get('picker-master-product', 'ProductCrudController@picker');
     Route::crud('document-flow', 'DocumentFlowCrudController');
+    Route::crud('stock-adjustment', 'StockAdjustmentCrudController');
 }); // this should be the absolute last line of this file

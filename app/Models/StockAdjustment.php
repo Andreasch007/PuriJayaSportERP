@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class StockAdjustment extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'products';
+    protected $table = 'stock_adjustment_h';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -34,23 +34,18 @@ class Product extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function category()
+    public function user()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(User::class);
     }
-
-    public function subCategory()
+    public function location()
     {
-        return $this->belongsTo(SubCategory::class);
+        return $this->belongsTo(Location::class);
     }
-
-    public function purchaseinvoicedetail(){
-        return $this->hasMany(PurchaseInvoiceDetail::class);
-    }
-
     public function stockadjustmentdetail(){
         return $this->hasMany(StockAdjustmentDetail::class);
     }
+
 
     /*
     |--------------------------------------------------------------------------
